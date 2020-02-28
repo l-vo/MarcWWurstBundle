@@ -2,14 +2,19 @@
 
 namespace MarcW\Bundle\WurstBundle\Tests\Command;
 
+use MarcW\Bundle\WurstBundle\MarcWWurstBundle;
+use Nyholm\BundleTest\BaseBundleTestCase;
+use Symfony\Bridge\PhpUnit\SetUpTearDownTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use MarcW\Bundle\WurstBundle\Command\WurstCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class WurstCommandTestCase extends \PHPUnit_Framework_TestCase
+class WurstCommandTestCase extends BaseBundleTestCase
 {
+    use SetUpTearDownTrait;
+
     protected $defaultWurst = 'classic';
     protected $wurstResourcesDirectory;
     protected $sideResourcesDirectory;
@@ -18,7 +23,7 @@ class WurstCommandTestCase extends \PHPUnit_Framework_TestCase
     protected $wurstTypes;
     protected $sides;
 
-    public function __construct()
+    private function doSetUp()
     {
         $resourceDirectory = $this->getResourceDirectory();
         $this->wurstResourcesDirectory = $resourceDirectory.'wurst/';
@@ -31,6 +36,12 @@ class WurstCommandTestCase extends \PHPUnit_Framework_TestCase
         $this->sides = $this->findFilenamesFromGivenDirectory($this->sideResourcesDirectory);
     }
 
+    protected function getBundleClass()
+    {
+        return MarcWWurstBundle::class;
+    }
+
+
     protected function getResourceDirectory()
     {
         $sourceDirectory = __DIR__.'/../../';
@@ -41,8 +52,10 @@ class WurstCommandTestCase extends \PHPUnit_Framework_TestCase
 
     protected function setCommand()
     {
-        $mockedKernel = $this->getMock('Symfony\\Component\\HttpKernel\\Kernel', array(), array(), '', false);
-        $application = new Application($mockedKernel);
+        $kernel = $this->createKernel();
+        $this->bootKernel();
+
+        $application = new Application($kernel);
         $application->add(new WurstCommand());
 
         $this->command = $application->find('wurst:print');

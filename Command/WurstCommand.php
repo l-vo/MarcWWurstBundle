@@ -3,6 +3,7 @@
 namespace MarcW\Bundle\WurstBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,8 +15,15 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @author Marc Weistroff <marc.weistroff@gmail.com>
  */
-class WurstCommand extends ContainerAwareCommand
+class WurstCommand extends Command
 {
+    /**
+     * @var integer
+     *
+     * No error
+     */
+    const NO_ERROR = 0;
+
     /**
      * @var integer
      *
@@ -92,6 +100,8 @@ class WurstCommand extends ContainerAwareCommand
                 $output->write($option);
             }
         }
+
+        return self::NO_ERROR;
     }
 
     /**

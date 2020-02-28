@@ -17,5 +17,10 @@
     "autoload": {
         "psr-0": { "MarcW\\Bundle\\WurstBundle": "" }
     },
-    "target-dir": "MarcW/Bundle/WurstBundle"
+    "target-dir": "MarcW/Bundle/WurstBundle",
+    "require-dev": {
+        "symfony/phpunit-bridge": "^4.4 || ^5.0",
+        "nyholm/symfony-bundle-test": "dev-master",
+        "symfony/console": "^3.0 || ^4.0 || ^5.0"
+    }
 }
